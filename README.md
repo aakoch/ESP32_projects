@@ -1,6 +1,49 @@
 # ESP32 projects
 
-## Digital Thermometer
+## ESP32 Dev Board
+
+### Pinout Diagram
+https://docs.espressif.com/projects/esp-idf/en/latest/esp32/_images/esp32-devkitC-v4-pinout.png
+
+## DS18B20 Digital Thermometer
+
+<img src="digital_thermometer/DS18B20_digital_thermometer.jpg" width="250" alt="DS18B20_digital_thermometer">
+
+
+### Product Page
+https://www.maximintegrated.com/en/products/sensors/DS18B20.html
 
 ### Datasheet
 https://datasheets.maximintegrated.com/en/ds/DS18B20.pdf
+
+### YouTube Video
+(Not mine)
+
+https://www.youtube.com/watch?v=Y1__vmkr8-g
+
+### Wiring Diagram
+https://randomnerdtutorials.com/esp32-ds18b20-temperature-arduino-ide/
+
+## Rotary Encoder
+
+<img src="rotaryEncoder/rotary_encoder.jpg" width="250" alt="rotary_encoder">
+
+## SR04 Ultrasonic (Distance) Sensor
+
+### Tutorial
+https://lastminuteengineers.com/arduino-sr04-ultrasonic-sensor-tutorial/
+
+## DHT11 Temperature and Humidity Sensor
+
+<img src="blue_temp_humidity/DHT11_temperature_humidity.jpg" width="250" alt="DHT11_temperature_humidity">
+
+## AH49E Linear Hall-Effect IC
+
+### Datasheet
+https://www.diodes.com/assets/Datasheets/AH49E.pdf
+
+
+## MPSA13 NPM Transistor
+
+### Datasheet
+https://www.nteinc.com/specs/original/MPSA13_14.pdf
