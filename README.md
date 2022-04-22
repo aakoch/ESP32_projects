@@ -9,6 +9,8 @@ https://docs.espressif.com/projects/esp-idf/en/latest/esp32/_images/esp32-devkit
 
 <img src="digital_thermometer/DS18B20_digital_thermometer.jpg" width="250" alt="DS18B20_digital_thermometer">
 
+### Code
+[Arduino sketch (.INO)](digital_thermometer/digital_thermometer.ino)
 
 ### Product Page
 https://www.maximintegrated.com/en/products/sensors/DS18B20.html
@@ -28,7 +30,15 @@ https://randomnerdtutorials.com/esp32-ds18b20-temperature-arduino-ide/
 
 <img src="rotaryEncoder/rotary_encoder.jpg" width="250" alt="rotary_encoder">
 
+### Code
+[Arduino sketch (.INO)](rotaryEncoder/rotaryEncoder.ino)
+
 ## SR04 Ultrasonic (Distance) Sensor
+
+<img src="distance/HC-SR04_ultrasonic.jpg" width="250" alt="ultrasonic sensor">
+
+### Code
+[Arduino sketch (.INO)](distance/distance.ino)
 
 ### Tutorial
 https://lastminuteengineers.com/arduino-sr04-ultrasonic-sensor-tutorial/
@@ -37,13 +47,22 @@ https://lastminuteengineers.com/arduino-sr04-ultrasonic-sensor-tutorial/
 
 <img src="blue_temp_humidity/DHT11_temperature_humidity.jpg" width="250" alt="DHT11_temperature_humidity">
 
+### Code
+[Arduino sketch (.INO)](rotaryEncoder/rotaryEncoder.ino)
+
 ## AH49E Linear Hall-Effect IC
+
+### Code
+None yet
 
 ### Datasheet
 https://www.diodes.com/assets/Datasheets/AH49E.pdf
 
 
 ## MPSA13 NPM Transistor
+
+### Code
+None yet
 
 ### Datasheet
 https://www.nteinc.com/specs/original/MPSA13_14.pdf
