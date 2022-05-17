@@ -3,12 +3,10 @@
 #include <WebServer.h>
 #include <ESPmDNS.h>
 #include <HTTPUpdateServer.h>
+#include "WiFiCredentials.h"
 
 #define PIN_LED 2
 #define PIN_SPEAKER 4
-
-#define ssid "JoelCantDecide"
-#define password "3ttt333ttt3"
 
 #define freq 5000
 #define blinkFreq 5
@@ -333,7 +331,7 @@ void playHalf(note_t note) {
 void playNote(note_t note, int len) {
   ledcWriteNote(speakerChannel, note, 4);
   delay(len * EIGTH_NOTE_LENGTH);
-  ledcWrite(ledChannel, 0);
+  ledcWrite(speakerChannel, 0);
   delay(NOTE_PAUSE_LENGTH);
 }
 
