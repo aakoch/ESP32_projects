@@ -5,6 +5,7 @@
 #include <HTTPUpdateServer.h>
 
 #define PIN_LED 2
+#define PIN_SPEAKER 4
 
 #define ssid "JoelCantDecide"
 #define password "3ttt333ttt3"
@@ -13,7 +14,11 @@
 #define blinkFreq 5
 #define seizureFreq 5
 #define ledChannel 0
+#define speakerChannel 1
+#define speakerFreq 10000
 #define resolution 8
+#define NOTE_PAUSE_LENGTH 400
+#define EIGTH_NOTE_LENGTH 200
 
 #define DEBUG_ON1 true
 
@@ -23,6 +28,7 @@ long startTime = millis();
 TaskHandle_t PulseTask;
 TaskHandle_t CheckOnLedTask;
 TaskHandle_t FlashReadyTask;
+TaskHandle_t sweepSoundTask;
 
 WebServer httpServer(80);
 HTTPUpdateServer httpUpdater;
@@ -33,7 +39,7 @@ void handleRoot() {
 //  int min = sec / 60;
 //  int hr = min / 60;
 
-  String message = "<html>\
+  String response = "<html>\
   <head>\
     <meta name=\"viewport\" content=\"width=device-width, initial-scale=1\">\
     <link rel=\"icon\" href=\"data:,\">\
@@ -56,11 +62,13 @@ void handleRoot() {
     <a href=\"/Off\"><button>Off</button></a><br>\
     <a href=\"/Pulse\"><button>Pulse</button></a><br>\
     <a href=\"/Blink\"><button>Blink</button></a><br>\
+    <a href=\"/twinkle\"><button>Play twinkle twinkle</button></a><br>\
+    <a href=\"/sweep\"><button>Sweep sound</button></a><br>\
     Click <a href=\"/update\">here</a> to update the firmware.<br>\
   </body>\
 </html>";
 
-  httpServer.send(200, "text/html", message);
+  httpServer.send(200, "text/html", response);
 }
 
 
@@ -85,6 +93,7 @@ void setup()
 {
     ledcSetup(ledChannel, freq, resolution);
     ledcAttachPin(PIN_LED, ledChannel);
+    ledcSetup(speakerChannel, speakerFreq, resolution);
     
     Serial.begin(115200);
     
@@ -137,7 +146,7 @@ void setup()
                      
     if( xReturned == pdPASS )
     {
-      Serial.println("CheckOnLedTask created");
+      if (DEBUG_ON1) Serial.println("CheckOnLedTask created");
       vTaskSuspend(CheckOnLedTask); 
     }
   
@@ -150,7 +159,7 @@ void setup()
                       &PulseTask);  /* Task handle to keep track of created task */
     if (xReturned == pdPASS)
     {
-      Serial.println("PulseTask created");            
+      if (DEBUG_ON1) Serial.println("PulseTask created");
       vTaskSuspend(PulseTask); 
     }
 
@@ -162,6 +171,11 @@ void setup()
     httpServer.on("/Off", turnOff);
     httpServer.on("/Pulse", startPulse);
     httpServer.on("/Blink", startBlink);
+    httpServer.on("/sweep", sweepSound);
+    httpServer.on("/sound2", testSound2);
+    httpServer.on("/sound3", testSound3);
+    httpServer.on("/soundOff", turnSoundOff);
+    httpServer.on("/twinkle", playTwinkleTwinkle);
     httpServer.on("/test.svg", drawGraph);
     httpServer.on("/inline", []() {
       httpServer.send(200, "text/plain", "this works as well");
@@ -170,7 +184,7 @@ void setup()
     httpServer.begin();
     Serial.println("HTTP server started");
 
-    Serial.printf("HTTPUpdateServer ready! Open http://%s/update in your browser\n", localIP);
+    if (DEBUG_ON1) Serial.printf("HTTPUpdateServer ready! Open http://%s/update in your browser\n", localIP);
   
     FlashReady();
 }
@@ -179,7 +193,150 @@ void loop() {
   httpServer.handleClient();
   delay(2);//allow the cpu to switch to other tasks
 }
-        
+
+void sweepSound() {
+  Serial.println("sweeping sound");
+  
+  xTaskCreatePinnedToCore(
+    sweepSoundTaskMethod,   /* Task function. */
+    "sweepSountTask",     /* name of task. */
+    10000,       /* Stack size of task */
+    NULL,        /* parameter of the task */
+    0,           /* priority of the task */
+    &sweepSoundTask,  /* Task handle to keep track of created task */
+    0);          /* pin task to core 0 */
+      
+  handleRoot();
+}
+    
+
+void sweepSoundTaskMethod(void * pvParameters) {
+  ledcAttachPin(PIN_SPEAKER, speakerChannel);
+  delay(250);
+  for (int i = 1; i < 2000; i++) {
+    ledcWriteTone(speakerChannel, i);
+    delay(3);
+  }
+  ledcDetachPin(PIN_SPEAKER);
+}
+
+void testSound2() {
+  Serial.println("testing sound 2");
+  ledcAttachPin(PIN_SPEAKER, speakerChannel);
+  delay(250);
+  ledcWriteNote(speakerChannel, NOTE_C, 1);
+  handleRoot();
+}
+
+void testSound3() {
+  Serial.println("testing sound 2");
+  ledcAttachPin(PIN_SPEAKER, speakerChannel);
+  delay(250);
+  ledcWriteNote(speakerChannel, NOTE_C, 2);
+  handleRoot();
+}
+
+void turnSoundOff() {
+  Serial.println("turning off sound");
+  ledcDetachPin(PIN_SPEAKER);
+  handleRoot();
+}
+
+void playTwinkleTwinkle() {
+  Serial.println("playing twinkle twinkle");
+  
+  xTaskCreatePinnedToCore(
+    playTwinkleTwinkleTaskMethod,   /* Task function. */
+    "playTwinkleTwinkleTask",     /* name of task. */
+    10000,       /* Stack size of task */
+    NULL,        /* parameter of the task */
+    0,           /* priority of the task */
+    NULL,  /* Task handle to keep track of created task */
+    0);          /* pin task to core 0 */
+      
+  handleRoot();
+}
+    
+void playTwinkleTwinkleTaskMethod(void * pvParameters) {
+  ledcAttachPin(PIN_SPEAKER, speakerChannel);
+  delay(250);
+  vTaskResume(PulseTask);
+  delay(250);
+  playQuarter(NOTE_C);
+  playQuarter(NOTE_C);
+  playQuarter(NOTE_G);
+  playQuarter(NOTE_G);
+  playQuarter(NOTE_A);
+  playQuarter(NOTE_A);
+  playHalf(NOTE_G);
+  delay(NOTE_PAUSE_LENGTH);
+  
+  playQuarter(NOTE_F);
+  playQuarter(NOTE_F);
+  playQuarter(NOTE_E);
+  playQuarter(NOTE_E);
+  playQuarter(NOTE_D);
+  playQuarter(NOTE_D);
+  playHalf(NOTE_C);
+  delay(NOTE_PAUSE_LENGTH);
+  
+  playQuarter(NOTE_G);
+  playQuarter(NOTE_G);
+  playQuarter(NOTE_F);
+  playQuarter(NOTE_F);
+  playQuarter(NOTE_E);
+  playQuarter(NOTE_E);
+  playHalf(NOTE_D);
+  delay(NOTE_PAUSE_LENGTH);
+  
+  playQuarter(NOTE_G);
+  playQuarter(NOTE_G);
+  playQuarter(NOTE_F);
+  playQuarter(NOTE_F);
+  playQuarter(NOTE_E);
+  playQuarter(NOTE_E);
+  playHalf(NOTE_D);
+  delay(NOTE_PAUSE_LENGTH);
+  
+  playQuarter(NOTE_C);
+  playQuarter(NOTE_C);
+  playQuarter(NOTE_G);
+  playQuarter(NOTE_G);
+  playQuarter(NOTE_A);
+  playQuarter(NOTE_A);
+  playHalf(NOTE_G);
+  delay(NOTE_PAUSE_LENGTH);
+  
+  playQuarter(NOTE_F);
+  playQuarter(NOTE_F);
+  playQuarter(NOTE_E);
+  playQuarter(NOTE_E);
+  playQuarter(NOTE_D);
+  playQuarter(NOTE_D);
+  playHalf(NOTE_C);
+  
+  ledcDetachPin(PIN_SPEAKER);
+  vTaskSuspend(PulseTask); 
+  turnOffLed();
+  
+  handleRoot();
+}
+
+void playQuarter(note_t note) {
+  playNote(note, 2);
+}
+
+void playHalf(note_t note) {
+  playNote(note, 4);
+}
+
+void playNote(note_t note, int len) {
+  ledcWriteNote(speakerChannel, note, 4);
+  delay(len * EIGTH_NOTE_LENGTH);
+  ledcWrite(ledChannel, 0);
+  delay(NOTE_PAUSE_LENGTH);
+}
+
 void turnOn() {
   Serial.println("turning on");
   stopBlink();
