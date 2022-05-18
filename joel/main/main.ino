@@ -48,27 +48,37 @@ void handleRoot() {
     <meta name=\"viewport\" content=\"width=device-width, initial-scale=1\">\
     <link rel=\"icon\" href=\"data:,\">\
     <title>Joel</title>\
-    <style>\
-      button {\
-        background-color: #4CAF50;\
-        border: none;\
-        color: white;\
-        padding: 16px 40px;\
-        text-decoration: none;\
-        font-size: 30px;\
-        margin: 2px;\
-        cursor: pointer;\
-      }\
-    </style>\
+    <link href=\"https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css\" rel=\"stylesheet\" integrity=\"sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC\" crossorigin=\"anonymous\">\
+    <script src=\"https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js\" integrity=\"sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM\" crossorigin=\"anonymous\"></script>\
   </head>\
   <body>\
-    <a href=\"/On\"><button>On</button></a>\
-    <a href=\"/Off\"><button>Off</button></a><br>\
-    <a href=\"/Pulse\"><button>Pulse</button></a><br>\
-    <a href=\"/Blink\"><button>Blink</button></a><br>\
-    <a href=\"/Seizure\"><button>Seizure</button></a><br>\
-    <a href=\"/twinkle\">Play Twinkle, Twinkle</a><br>\
-    Click <a href=\"/update\">here</a> to update the firmware.<br>\
+    <div class=\"container-fluid px-2\">\
+      <div class=\"row m-1\">\
+        <div class=\"col\">\
+          <a href=\"/On\" class=\"btn btn-lg btn-success\">On</a>\
+          <a href=\"/Off\" class=\"btn btn-lg btn-danger\">Off</a>\
+        </div>\
+      </div>\
+      <div class=\"row m-1\">\
+        <div class=\"col\">\
+        <div class=\"btn-group\" role=\"group\" aria-label=\"Blinking options\">\
+          <a href=\"/Pulse\" class=\"btn btn-primary\">Pulse</a>\
+          <a href=\"/Blink\" class=\"btn btn-primary\">Blink</a>\
+          <a href=\"/Seizure\" class=\"btn btn-primary\">Seizure</a>\
+        </div>\
+        </div>\
+      </div>\
+      <div class=\"row m-1\">\
+        <div class=\"col\">\
+        <a href=\"/twinkle\">Play Twinkle, Twinkle</a><br>\
+        </div>\
+      </div>\
+      <div class=\"row m-1\">\
+        <div class=\"col\">\
+        Click <a href=\"/update\">here</a> to update the firmware.\
+        </div>\
+      </div>\
+    </div>\
   </body>\
 </html>";
 
