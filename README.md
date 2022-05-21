@@ -66,3 +66,11 @@ None yet
 
 ### Datasheet
 https://www.nteinc.com/specs/original/MPSA13_14.pdf
+
+## 3144 Hall Sensor
+
+<img src="hall_sensor_3144/hall_sensor.jpg" width="250" alt="hall_sensor_3144">
+
+### Code
+[Arduino sketch (.INO)](hall_sensor_3144/hall_sensor_3144.ino)
+
